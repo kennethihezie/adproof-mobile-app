@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 import 'colors.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class CustomButton extends StatelessWidget {
   final String title;
   Function? callback;

@@ -2,8 +2,10 @@ import 'dart:async';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:adproof/utils/text_widget.dart';
 import 'package:flutter/cupertino.dart';
-
 import 'colors.dart';
+
+/// Created by collins ihezie on 10/05/23
+
 
 class TimerWidget extends StatefulWidget {
   TimerWidget({Key? key, required this.count, this.intervalInSeconds, this.callBack}) : super(key: key);

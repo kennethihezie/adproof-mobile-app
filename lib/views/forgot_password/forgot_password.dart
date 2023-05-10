@@ -11,6 +11,8 @@ import '../../utils/labelled_input.dart';
 import '../../utils/text_widget.dart';
 import 'package:go_router/go_router.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class ForgotPassword extends StatefulWidget {
   ForgotPassword({Key? key}) : super(key: key);
 
@@ -20,7 +22,7 @@ class ForgotPassword extends StatefulWidget {
 
 class _ForgotPasswordState extends State<ForgotPassword> {
   final _emailController = TextEditingController();
-  bool isWrongPassword = false;
+  bool _isWrongEmail = false;
 
   @override
   Widget build(BuildContext context) {
@@ -99,8 +101,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                             inputAction: TextInputAction.next,
                             textInputType: TextInputType.emailAddress,
                             hint: 'Enter email',
-                            isWrongPassword: isWrongPassword,
+                            isError: _isWrongEmail,
                             errorMsg: 'Email dosen\'t exist!',
+                            onChange: (text){
+                              setState(() {
+                                _isWrongEmail = false;
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 24,
@@ -112,7 +119,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                                 context.push(AdProofRoutes.newPassword)
                               } else {
                                 setState((){
-                                  isWrongPassword = true;
+                                  _isWrongEmail = true;
                                 })
                               }
                             },

@@ -12,6 +12,8 @@ import 'package:otp_text_field/otp_field.dart';
 import 'package:otp_text_field/otp_field_style.dart';
 import 'package:otp_text_field/style.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class OtpPage extends StatefulWidget {
   final String? email;
   const OtpPage({Key? key, this.email}) : super(key: key);

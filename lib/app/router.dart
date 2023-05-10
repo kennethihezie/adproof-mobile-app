@@ -11,6 +11,7 @@ import 'package:go_router/go_router.dart';
 import '../views/forgot_password/password_reset_success.dart';
 import '../views/spalsh_screen/splash_screen.dart';
 
+/// Created by collins ihezie on 10/05/23
 
 class AdProofRouter {
   static final GoRouter router = GoRouter(routes: [

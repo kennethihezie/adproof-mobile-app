@@ -6,6 +6,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../utils/colors.dart';
 import '../onboarding/onboarding_screen.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);

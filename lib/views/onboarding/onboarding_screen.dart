@@ -9,6 +9,8 @@ import '../../utils/button.dart';
 import 'onboarding_widget.dart';
 import 'package:go_router/go_router.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class OnBoardingPage extends StatefulWidget {
   const OnBoardingPage({Key? key}) : super(key: key);
 

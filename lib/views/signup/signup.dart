@@ -7,6 +7,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../utils/outline_button.dart';
 import 'package:go_router/go_router.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class SignUp extends StatelessWidget {
   const SignUp({Key? key}) : super(key: key);
 
@@ -28,7 +30,6 @@ class SignUp extends StatelessWidget {
               Center(child: SizedBox(width: 250,  child: textWidget(text: 'Sign up now to regain control of the internet from clutter and annoyances ads.', fontWeight: FontWeight.w400, fontSize: 14, color: AdProofColors.A140033.withOpacity(0.6), textAlign: TextAlign.center))),
 
               SizedBox(height: MediaQuery.of(context).size.height * 0.4,),
-
 
               CustomOutlineButton(text: 'Sign up with Email', icon: 'email', callback: () => context.push(AdProofRoutes.signUpWithEmail), ),
 

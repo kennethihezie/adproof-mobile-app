@@ -2,6 +2,8 @@ import 'dart:ui';
 
 import 'package:flutter/material.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 abstract class AdProofColors {
   static const A140033 = Color(0xFF140033);
   static const AFD22D4 = Color(0xFFFD22D4);

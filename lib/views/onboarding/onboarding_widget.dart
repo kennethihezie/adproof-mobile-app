@@ -3,6 +3,8 @@ import 'package:adproof/utils/text_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class OnBoardingWidget extends StatelessWidget {
   final String title, image, subTitle;
   const OnBoardingWidget({Key? key, required this.title, required this.image, required this.subTitle}) : super(key: key);

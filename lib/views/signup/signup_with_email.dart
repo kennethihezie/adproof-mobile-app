@@ -1,5 +1,6 @@
 import 'package:adproof/app/routes.dart';
 import 'package:adproof/utils/button.dart';
+import 'package:adproof/utils/helper.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -9,6 +10,8 @@ import '../../utils/colors.dart';
 import '../../utils/labelled_input.dart';
 import '../../utils/text_widget.dart';
 import 'package:go_router/go_router.dart';
+
+/// Created by collins ihezie on 10/05/23
 
 class SignUpWithEmail extends StatefulWidget {
   const SignUpWithEmail({Key? key}) : super(key: key);
@@ -22,7 +25,11 @@ class _SignUpWithEmailState extends State<SignUpWithEmail> {
   final _lastNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool obscureText = true;
+  bool _firstNameValidator = false;
+  bool _lastNameValidator = false;
+  bool _emailNameValidator = false;
+  bool _passwordNameValidator = false;
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -66,27 +73,59 @@ class _SignUpWithEmailState extends State<SignUpWithEmail> {
 
 
                     Padding(padding: const EdgeInsets.all(24), child: Column(children: [
-                      LabelledInput(controller: _firstNameController, label: 'First name', inputAction: TextInputAction.next, textInputType: TextInputType.text, hint: 'Enter first name',),
-
-                      const SizedBox(height: 14,),
-
-                      LabelledInput(controller: _lastNameController, label: 'Last name', inputAction: TextInputAction.next, textInputType: TextInputType.text, hint: 'Enter last name'),
-
-                      const SizedBox(height: 14,),
-
-                      LabelledInput(controller: _emailController, label: 'Email', inputAction: TextInputAction.next, textInputType: TextInputType.emailAddress, hint: 'Enter email'),
-
-                      const SizedBox(height: 14,),
-
-                      LabelledInput(controller: _passwordController, label: 'Password', obscureText: obscureText, inputAction: TextInputAction.done, hint: 'Enter password', isPassword: true, textInputType: TextInputType.visiblePassword, toggleObscureText: (){
+                      LabelledInput(controller: _firstNameController, label: 'First name', inputAction: TextInputAction.next, textInputType: TextInputType.text, hint: 'first name', isError: _firstNameValidator, errorMsg: 'Invalid first name!',
+                        onChange: (text){
                         setState(() {
-                          obscureText = !obscureText;
+                          if(text.isNotEmpty){
+                            _firstNameValidator = false;
+                          }
                         });
                       },),
 
+                      const SizedBox(height: 14,),
+
+                      LabelledInput(controller: _lastNameController, label: 'Last name', inputAction: TextInputAction.next, textInputType: TextInputType.text, hint: 'last name', isError: _lastNameValidator, errorMsg: 'Invalid last name!', onChange: (text){
+                        setState(() {
+                          if(text.isNotEmpty){
+                            _lastNameValidator = false;
+                          }
+                        });
+                      }),
+
+                      const SizedBox(height: 14,),
+
+                      LabelledInput(controller: _emailController, label: 'Email', inputAction: TextInputAction.next, textInputType: TextInputType.emailAddress, hint: 'email', isError: _emailNameValidator, errorMsg: 'Invalid email!',
+                          onChange: (text){
+                            setState(() {
+                              if(text.isNotEmpty){
+                                _emailNameValidator = false;
+                              }
+                            });
+                          }),
+
+                      const SizedBox(height: 14,),
+
+                      LabelledInput(controller: _passwordController, label: 'Password', obscureText: _obscureText, inputAction: TextInputAction.done, hint: 'password', isPassword: true, isError: _passwordNameValidator, errorMsg: 'Invalid password!',textInputType: TextInputType.visiblePassword, toggleObscureText: (){
+                        setState(() {
+                          _obscureText = !_obscureText;
+                        });
+                      },
+                          onChange: (text){
+                            setState(() {
+                              if(text.isNotEmpty){
+                                _passwordNameValidator = false;
+                              }
+                            });
+                          }
+                      ),
+
                       const SizedBox(height: 24,),
 
-                      CustomButton(title: 'Sign up', callback: () => context.push(AdProofRoutes.otpPage, extra: _emailController.text),),
+                      CustomButton(title: 'Sign up', callback: () => {
+                        if(_validate()){
+                          context.push(AdProofRoutes.otpPage, extra: _emailController.text)
+                        }
+                      },),
 
                       const SizedBox(height: 24,),
 
@@ -117,5 +156,36 @@ class _SignUpWithEmailState extends State<SignUpWithEmail> {
         ),
       ),
     );
+  }
+
+  bool _validate(){
+    setState(() {
+      if(_firstNameController.text.isEmpty){
+        _firstNameValidator = true;
+      } else {
+        _firstNameValidator = false;
+      }
+      if(_lastNameController.text.isEmpty){
+        _lastNameValidator = true;
+      } else {
+        _lastNameValidator = false;
+      }
+      if(_emailController.text.isEmpty && !Helper.emailRegex(_emailController.text)){
+        _emailNameValidator = true;
+      } else {
+        _emailNameValidator = false;
+      }
+      if(_passwordController.text.isEmpty){
+        _passwordNameValidator = true;
+      } else {
+        _passwordNameValidator = false;
+      }
+    });
+
+
+    if(!_firstNameValidator && !_lastNameValidator && !_emailNameValidator && !_passwordNameValidator){
+      return true;
+    }
+    return false;
   }
 }

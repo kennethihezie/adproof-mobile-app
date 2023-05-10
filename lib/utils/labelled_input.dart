@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class LabelledInput extends StatelessWidget {
   String? label;
   TextEditingController controller;
@@ -12,10 +14,11 @@ class LabelledInput extends StatelessWidget {
   bool obscureText;
   String? hint;
   Function? toggleObscureText;
-  bool isWrongPassword;
+  Function(String)? onChange;
+  bool isError;
   String? errorMsg;
   bool isPassword;
-  LabelledInput({Key? key, this.label, required this.controller, this.inputAction, this.textInputType, this.obscureText = false, this.toggleObscureText, this.hint, this.isWrongPassword = false, this.errorMsg, this.isPassword = false}) : super(key: key);
+  LabelledInput({Key? key, this.label, required this.controller, this.inputAction, this.textInputType, this.obscureText = false, this.toggleObscureText, this.hint, this.isError = false, this.errorMsg, this.isPassword = false, this.onChange}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +32,7 @@ class LabelledInput extends StatelessWidget {
             children: [
               textWidget(text: label!, fontWeight: FontWeight.w500, fontSize: 14, color: AdProofColors.A140033.withOpacity(0.6)),
 
-              if(isWrongPassword)
+              if(isError)
                 textWidget(text: errorMsg ?? '', fontWeight: FontWeight.w500, fontSize: 14, color: AdProofColors.AF27E81),
 
             ],
@@ -42,7 +45,7 @@ class LabelledInput extends StatelessWidget {
           decoration: BoxDecoration(
             color: AdProofColors.AF1F6FB,
             borderRadius: BorderRadius.circular(9),
-            border: isWrongPassword ? Border.all(color: AdProofColors.AF27E81) : null
+            border: isError ? Border.all(color: AdProofColors.AF27E81) : null
           ),
           child: TextFormField(
             controller: controller,
@@ -51,6 +54,7 @@ class LabelledInput extends StatelessWidget {
             obscureText: obscureText,
             obscuringCharacter: '*',
             style: GoogleFonts.dmSans(color: AdProofColors.A140033, fontWeight: FontWeight.w500, fontSize: 14.0),
+            onChanged: onChange,
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: hint,

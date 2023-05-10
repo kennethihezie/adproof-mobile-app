@@ -6,9 +6,12 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../utils/colors.dart';
+import '../../utils/helper.dart';
 import '../../utils/labelled_input.dart';
 import '../../utils/text_widget.dart';
 import 'package:go_router/go_router.dart';
+
+/// Created by collins ihezie on 10/05/23
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -20,8 +23,10 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  bool obscureText = true;
-  bool isWrongPassword = false;
+  bool _obscureText = true;
+  bool _emailNameValidator = false;
+  bool _passwordNameValidator = false;
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,15 +69,27 @@ class _LoginPageState extends State<LoginPage> {
                     const SizedBox(height: 60,),
 
                     Padding(padding: const EdgeInsets.all(24), child: Column(children: [
-                      LabelledInput(controller: _emailController, label: 'Email', inputAction: TextInputAction.next, textInputType: TextInputType.emailAddress, hint: 'Enter email',),
+                      LabelledInput(controller: _emailController, label: 'Email', inputAction: TextInputAction.next, textInputType: TextInputType.emailAddress, hint: 'Enter email',  isError: _emailNameValidator, errorMsg: 'Invalid email!', onChange: (text){
+                        setState(() {
+                          if(text.isNotEmpty){
+                            _emailNameValidator = false;
+                          }
+                        });
+                      }),
 
                       const SizedBox(height: 14,),
 
-                      LabelledInput(controller: _passwordController, label: 'Password', obscureText: obscureText, inputAction: TextInputAction.done, textInputType: TextInputType.visiblePassword, isPassword: true, hint: 'Enter password', isWrongPassword: isWrongPassword, errorMsg: 'Password incorrect', toggleObscureText: (){
+                      LabelledInput(controller: _passwordController, label: 'Password', obscureText: _obscureText, inputAction: TextInputAction.done, textInputType: TextInputType.visiblePassword, isPassword: true, hint: 'Enter password', isError: _passwordNameValidator, errorMsg: 'Password incorrect', toggleObscureText: (){
                         setState(() {
-                          obscureText = !obscureText;
+                          _obscureText = !_obscureText;
                         });
-                      },),
+                      },onChange: (text){
+                        setState(() {
+                          if(text.isNotEmpty){
+                            _passwordNameValidator = false;
+                          }
+                        });
+                      }),
 
                       const SizedBox(height: 15,),
 
@@ -84,9 +101,9 @@ class _LoginPageState extends State<LoginPage> {
                       const SizedBox(height: 24,),
 
                       CustomButton(title: 'Login', callback: () => {
-                        setState((){
-                          isWrongPassword = !isWrongPassword;
-                        })
+                        if(_validate()){
+                          Helper.showToast("Success")
+                        }
                       },),
 
                       const SizedBox(height: 24,),
@@ -118,5 +135,26 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  bool _validate(){
+    setState(() {
+      if(_emailController.text.isEmpty && !Helper.emailRegex(_emailController.text)){
+        _emailNameValidator = true;
+      } else {
+        _emailNameValidator = false;
+      }
+      if(_passwordController.text.isEmpty){
+        _passwordNameValidator = true;
+      } else {
+        _passwordNameValidator = false;
+      }
+    });
+
+
+    if(!_emailNameValidator && !_passwordNameValidator){
+      return true;
+    }
+    return false;
   }
 }

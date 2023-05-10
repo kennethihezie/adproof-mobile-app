@@ -11,6 +11,8 @@ import '../../utils/labelled_input.dart';
 import '../../utils/text_widget.dart';
 import 'package:go_router/go_router.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class NewPasswordPage extends StatefulWidget {
   const NewPasswordPage({Key? key}) : super(key: key);
 
@@ -23,7 +25,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   final _confirmPasswordController = TextEditingController();
   bool obscureNewPassword = true;
   bool obscureConfirmPassword = true;
-
+  bool _passwordValidator = false;
 
   @override
   Widget build(BuildContext context) {
@@ -97,17 +99,26 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                       Column(
                         children: [
                           LabelledInput(
-                              controller: _newPasswordController,
-                              label: 'New password',
-                              inputAction: TextInputAction.next,
-                              textInputType: TextInputType.emailAddress,
-                              hint: 'new password',
-                              isPassword: true,
+                            controller: _newPasswordController,
+                            label: 'New password',
+                            inputAction: TextInputAction.next,
+                            textInputType: TextInputType.emailAddress,
+                            hint: 'new password',
+                            isPassword: true,
+                            isError: _passwordValidator,
+                            errorMsg: 'Password dosen\'t! match',
                             obscureText: obscureNewPassword,
-                            toggleObscureText: (){
-                                setState(() {
-                                  obscureNewPassword = !obscureNewPassword;
-                                });
+                            toggleObscureText: () {
+                              setState(() {
+                                obscureNewPassword = !obscureNewPassword;
+                              });
+                            },
+                            onChange: (text) {
+                              setState(() {
+                                if (text.isNotEmpty) {
+                                  _passwordValidator = false;
+                                }
+                              });
                             },
                           ),
                           const SizedBox(
@@ -124,25 +135,39 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             height: 31,
                           ),
                           LabelledInput(
-                              controller: _confirmPasswordController,
-                              label: 'Confirm New Password',
-                              inputAction: TextInputAction.next,
-                              textInputType: TextInputType.emailAddress,
-                              hint: 'confirm new password',
-                              obscureText: obscureConfirmPassword,
-                              isPassword: true,
-                              toggleObscureText: () {
-                                setState(() {
-                                  obscureConfirmPassword = !obscureConfirmPassword;
-                                });
-                              },
+                            controller: _confirmPasswordController,
+                            label: 'Confirm New Password',
+                            inputAction: TextInputAction.done,
+                            textInputType: TextInputType.emailAddress,
+                            hint: 'confirm new password',
+                            obscureText: obscureConfirmPassword,
+                            isPassword: true,
+                            isError: _passwordValidator,
+                            errorMsg: 'Password dosen\'t! match',
+                            toggleObscureText: () {
+                              setState(() {
+                                obscureConfirmPassword =
+                                    !obscureConfirmPassword;
+                              });
+                            },
+                            onChange: (text) {
+                              setState(() {
+                                if (text.isNotEmpty) {
+                                  _passwordValidator = false;
+                                }
+                              });
+                            },
                           ),
                           const SizedBox(
                             height: 34,
                           ),
                           CustomButton(
                             title: 'Reset Password',
-                            callback: () => context.push(AdProofRoutes.passwordSuccessPage),
+                            callback: () => {
+                              if(_validate()){
+                                context.push(AdProofRoutes.passwordSuccessPage)
+                              }
+                            },
                           ),
                           const SizedBox(
                             height: 24,
@@ -177,5 +202,22 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
         ),
       ),
     );
+  }
+
+  bool _validate() {
+    setState(() {
+      if (_newPasswordController.text.isEmpty ||
+          _confirmPasswordController.text.isEmpty ||
+          _newPasswordController.text != _confirmPasswordController.text) {
+        _passwordValidator = true;
+      } else {
+        _passwordValidator = false;
+      }
+    });
+
+    if (!_passwordValidator) {
+      return true;
+    }
+    return false;
   }
 }

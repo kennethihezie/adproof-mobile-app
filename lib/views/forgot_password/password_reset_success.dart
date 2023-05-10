@@ -1,10 +1,13 @@
+import 'package:adproof/app/routes.dart';
 import 'package:adproof/utils/button.dart';
-import 'package:adproof/views/onboarding/onboarding_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../utils/colors.dart';
 import '../../utils/text_widget.dart';
+import 'package:go_router/go_router.dart';
+
+/// Created by collins ihezie on 10/05/23
 
 class PasswordResetSuccess extends StatelessWidget {
   const PasswordResetSuccess({Key? key}) : super(key: key);
@@ -38,7 +41,7 @@ class PasswordResetSuccess extends StatelessWidget {
 
             const SizedBox(height: 34,),
 
-            CustomButton(title: 'Continue')
+            CustomButton(title: 'Continue', callback: () => context.push(AdProofRoutes.privacyPage),)
           ],
         ),
       )),

@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+/// Created by collins ihezie on 10/05/23
+
 class CustomOutlineButton extends StatelessWidget {
   final String text;
   String? icon;
